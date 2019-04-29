@@ -1,0 +1,27 @@
+{
+    "name": "alexandrign/difference-calculator",
+    "description": "Second project on hexlet",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alexandr Ignatyev",
+            "email": "asignatyev@mail.ru"
+        }
+    ],
+    "require": {
+        "docopt/docopt": "^1.0",
+        "squizlabs/php_codesniffer": "^3.4"
+    },
+    "bin":[  
+        "bin/gendiff"
+        
+    ],
+    "scripts":{  
+        "phpcs":"phpcs"
+    },
+    "autoload":{  
+        "files":[  
+            "src/Cli.php"
+        ]
+    }
+}
