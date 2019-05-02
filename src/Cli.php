@@ -3,8 +3,25 @@
 namespace DifferenceCalculator\Cli;
 
 use Docopt;
+use function DifferenceCalculator\Differ\genDiff;
 
-function run($doc)
+const REFERENCE = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+  -h --help                     Show this screen
+  --format <fmt>               bin
+DOC;
+
+
+function run()
 {
-    $args = Docopt::handle($doc);
+    $args = Docopt::handle(REFERENCE);
+    $firstPathToFile = $args->args['<firstFile>'];
+    $secondPathToFile = $args->args['<secondFile>'];
+    echo genDiff($firstPathToFile, $secondPathToFile);
 }
