@@ -7,13 +7,14 @@ use function Funct\Collection\union;
 
 function genDiff($firstPathToFile, $secondPathToFile)
 {
-    $firstDecodeFile = getDecodeFile($firstPathToFile);
-    $secondDecodeFile = getDecodeFile($secondPathToFile);
+    $firstDecodeFile = replaceBoolToString(getDecodeFile($firstPathToFile));
+    $secondDecodeFile = replaceBoolToString(getDecodeFile($secondPathToFile));
     return getParsedFile($firstDecodeFile, $secondDecodeFile);
 }
 
 function getParsedFile($firstDecodeFile, $secondDecodeFile)
 {
+
     $unionFirstAndSecondDecodeFiles = union($firstDecodeFile, $secondDecodeFile);
     $result = [];
     foreach ($unionFirstAndSecondDecodeFiles as $key => $value) {
@@ -32,4 +33,18 @@ function getParsedFile($firstDecodeFile, $secondDecodeFile)
     }
     $strResult = implode("\n", $result);
     return "{\n$strResult\n}";
+}
+
+function replaceBoolToString(array $array)
+{
+    return array_reduce(array_keys($array), function ($acc, $key) use ($array) {
+        if ($array[$key] === true) {
+            $acc[$key] = 'true';
+        } elseif ($array[$key] === false) {
+            $acc[$key] = 'false';
+        } else {
+            $acc[$key] = $array[$key];
+        }
+        return $acc;
+    }, []);
 }
