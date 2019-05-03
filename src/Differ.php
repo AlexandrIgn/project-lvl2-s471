@@ -2,29 +2,14 @@
 
 namespace DifferenceCalculator\Differ;
 
+use function DifferenceCalculator\Decodder\getDecodeFile;
 use function Funct\Collection\union;
-use Symfony\Component\Yaml\Yaml;
 
 function genDiff($firstPathToFile, $secondPathToFile)
 {
-    if (getFileExtension($firstPathToFile) === 'json' && getFileExtension($secondPathToFile) === 'json') {
-        $dataFirstFile = file_get_contents($firstPathToFile);
-        $dataSecondFile = file_get_contents($secondPathToFile);
-        $firstDecodeFile = json_decode($dataFirstFile, true);
-        $secondDecodeFile = json_decode($dataSecondFile, true);
-        return getParsedFile($firstDecodeFile, $secondDecodeFile);
-    } elseif (getFileExtension($firstPathToFile) === 'yml' && getFileExtension($secondPathToFile) === 'yml') {
-        $dataFirstFile = file_get_contents($firstPathToFile);
-        $dataSecondFile = file_get_contents($secondPathToFile);
-        $firstDecodeFile = Yaml::parse($dataFirstFile);
-        $secondDecodeFile = Yaml::parse($dataSecondFile);
-        return getParsedFile($firstDecodeFile, $secondDecodeFile);
-    }
-}
-
-function getFileExtension($pathToFile)
-{
-    return pathinfo($pathToFile, PATHINFO_EXTENSION);
+    $firstDecodeFile = getDecodeFile($firstPathToFile);
+    $secondDecodeFile = getDecodeFile($secondPathToFile);
+    return getParsedFile($firstDecodeFile, $secondDecodeFile);
 }
 
 function getParsedFile($firstDecodeFile, $secondDecodeFile)

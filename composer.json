@@ -25,7 +25,8 @@
     "autoload":{  
         "files":[  
             "src/Cli.php",
-            "src/Differ.php"
+            "src/Differ.php",
+            "src/Decodder.php"
         ],
         "psr-4": {
             "DifferenceCalculator\\Tests\\": "tests"
