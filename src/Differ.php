@@ -20,7 +20,6 @@ function genDiff($firstPathToFile, $secondPathToFile)
         $secondDecodeFile = Yaml::parse($dataSecondFile);
         return getParsedFile($firstDecodeFile, $secondDecodeFile);
     }
-    
 }
 
 function getFileExtension($pathToFile)
