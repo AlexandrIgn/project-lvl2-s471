@@ -22,4 +22,20 @@ class DifferTest extends TestCase
         $expected = file_get_contents('tests/YamlFiles/expected');
         $this->assertEquals($expected, genDiff($pathToFirstFile, $pathToSecondFile));
     }
+    
+    public function testGenDiffNestedJson()
+    {
+        $pathToFirstFile = 'tests/NestedJsonFiles/before.json';
+        $pathToSecondFile = 'tests/NestedJsonFiles/after.json';
+        $expected = file_get_contents('tests/NestedJsonFiles/expected');
+        $this->assertEquals($expected, genDiff($pathToFirstFile, $pathToSecondFile));
+    }
+
+    public function testGenDiffNestedYml()
+    {
+        $pathToFirstFile = 'tests/NestedYamlFiles/before.yml';
+        $pathToSecondFile = 'tests/NestedYamlFiles/after.yml';
+        $expected = file_get_contents('tests/NestedYamlFiles/expected');
+        $this->assertEquals($expected, genDiff($pathToFirstFile, $pathToSecondFile));
+    }
 }
