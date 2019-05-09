@@ -23,5 +23,6 @@ function run()
     $args = Docopt::handle(REFERENCE);
     $firstPathToFile = $args->args['<firstFile>'];
     $secondPathToFile = $args->args['<secondFile>'];
-    echo genDiff($firstPathToFile, $secondPathToFile);
+    $format = $args->args['--format'];
+    echo genDiff($firstPathToFile, $secondPathToFile, $format);
 }

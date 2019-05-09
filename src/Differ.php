@@ -5,17 +5,18 @@ namespace DifferenceCalculator\Differ;
 use function DifferenceCalculator\Decodder\getDecodeFile;
 use function Funct\Collection\union;
 use function DifferenceCalculator\AstBuilder\buildAst;
+use function DifferenceCalculator\Formater\getFormat;
 
 function genDiff($firstPathToFile, $secondPathToFile, $format = null)
 {
     $firstDecodeFile = getDecodeFile($firstPathToFile);
     $secondDecodeFile = getDecodeFile($secondPathToFile);
-    print_r($ast = buildAst($firstDecodeFile, $secondDecodeFile));
-    print_r($parsedAst = getParsedFile($ast));
+    $ast = buildAst($firstDecodeFile, $secondDecodeFile);
+    $parsedAst = getParsedFile($ast);
     if ($format === null) {
         return $parsedAst;
     }
-    return getFormat($ast, $format);
+    return getFormat($ast);
 }
 
 function getParsedFile($ast, $depth = 0)
@@ -52,15 +53,15 @@ function getStrNode($node, $depth)
 {
     $spaces = str_repeat('    ', $depth);
     if ($node['type'] === 'unchanged') {
-        return $spaces . "    {$node['key']}: " . replaceBoolToString($node['beforeValue']);
+        return $spaces . "    {$node['key']}: {$node['beforeValue']}";
     } elseif ($node['type'] === 'changed') {
-        $afterValue = $spaces . "  + {$node['key']}: " . replaceBoolToString($node['afterValue']);
-        $beforeValue = $spaces . "  - {$node['key']}: " . replaceBoolToString($node['beforeValue']);
+        $afterValue = $spaces . "  + {$node['key']}: {$node['afterValue']}";
+        $beforeValue = $spaces . "  - {$node['key']}: {$node['beforeValue']}";
         return "{$afterValue}\n{$beforeValue}";
     } elseif ($node['type'] === 'removed') {
-        return $spaces . "  - {$node['key']}: " . replaceBoolToString($node['beforeValue']);
+        return $spaces . "  - {$node['key']}: {$node['beforeValue']}";
     } elseif ($node['type'] === 'added') {
-        return $spaces . "  + {$node['key']}: " . replaceBoolToString($node['afterValue']);
+        return $spaces . "  + {$node['key']}: {$node['afterValue']}";
     }
 }
 
@@ -75,12 +76,4 @@ function getObjectToString($object, $depth)
     }
     $strResult = implode("\n", $result);
     return $spaces . "    {$strResult}" . "\n    {$spaces}}";
-}
-
-function replaceBoolToString($value)
-{
-    if (is_bool($value)) {
-        return $value === true ? 'true' : 'false';
-    }
-    return "{$value}";
 }

@@ -27,7 +27,8 @@
             "src/Cli.php",
             "src/Differ.php",
             "src/Decodder.php",
-            "src/AstBuilder.php"
+            "src/AstBuilder.php",
+            "src/Formater.php"
         ],
         "psr-4": {
             "DifferenceCalculator\\Tests\\": "tests"
