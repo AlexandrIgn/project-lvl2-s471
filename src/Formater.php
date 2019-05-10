@@ -2,7 +2,16 @@
 
 namespace DifferenceCalculator\Formater;
 
-function getFormat($ast, $partProperty = "")
+function getFormat($ast, $format)
+{
+    if ($format === 'plain') {
+        return getPlainFormat($ast);
+    } elseif ($format === 'json') {
+        return json_encode($ast, JSON_PRETTY_PRINT);
+    }
+}
+
+function getPlainFormat($ast, $partProperty = "")
 {
     $result = array_reduce($ast, function ($acc, $node) use ($partProperty) {
         if ($node['type'] === 'changed') {
@@ -14,7 +23,7 @@ function getFormat($ast, $partProperty = "")
             $acc[] = "Property '{$partProperty}{$node['key']}' was added with value: " .
             (is_object($node['afterValue']) ? "'complex value'" : "'{$node['afterValue']}'");
         } elseif ($node['type'] === 'nested') {
-            $acc[] = getFormat($node['children'], "{$node['key']}.");
+            $acc[] = getPlainFormat($node['children'], "{$node['key']}.");
         }
         return $acc;
     }, []);

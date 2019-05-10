@@ -12,39 +12,37 @@ function genDiff($firstPathToFile, $secondPathToFile, $format = null)
     $firstDecodeFile = getDecodeFile($firstPathToFile);
     $secondDecodeFile = getDecodeFile($secondPathToFile);
     $ast = buildAst($firstDecodeFile, $secondDecodeFile);
-    $parsedAst = getParsedFile($ast);
     if ($format === null) {
-        return $parsedAst;
+        return getParsedFile($ast);
     }
-    return getFormat($ast);
+    return getFormat($ast, $format);
 }
 
 function getParsedFile($ast, $depth = 0)
 {
     $spaces = str_repeat('    ', $depth);
-    $result = [];
-   // buildNode($type, $key, $beforeValue, $afterValue, $children = [])
-    foreach ($ast as $node) {
+    $result = array_reduce($ast, function ($acc, $node) use ($depth, $spaces) {
         if ($node['type'] === 'unchanged') {
-                $result[] = getStrNode($node, $depth);
+            $acc[] = getStrNode($node, $depth);
         } elseif ($node['type'] === 'changed') {
-                $result[] = getStrNode($node, $depth);
+            $acc[] = getStrNode($node, $depth);
         } elseif ($node['type'] === 'removed') {
             if (is_object($node['beforeValue'])) {
-                $result[] = $spaces . "  - {$node['key']}: {\n    " . getObjectToString($node['beforeValue'], $depth);
+                $acc[] = $spaces . "  - {$node['key']}: {\n    " . getObjectToString($node['beforeValue'], $depth);
             } else {
-                $result[] = getStrNode($node, $depth);
+                $acc[] = getStrNode($node, $depth);
             }
         } elseif ($node['type'] === 'added') {
             if (is_object($node['afterValue'])) {
-                $result[] = $spaces . "  + {$node['key']}: {\n    " . getObjectToString($node['afterValue'], $depth);
+                $acc[] = $spaces . "  + {$node['key']}: {\n    " . getObjectToString($node['afterValue'], $depth);
             } else {
-                $result[] = getStrNode($node, $depth);
+                $acc[] = getStrNode($node, $depth);
             }
         } elseif ($node['type'] === 'nested') {
-            $result[] = $spaces . "    {$node['key']}: " . getParsedFile($node['children'], $depth + 1);
+            $acc[] = $spaces . "    {$node['key']}: " . getParsedFile($node['children'], $depth + 1);
         }
-    }
+        return $acc;
+    }, []);
     $strResult = implode("\n", $result);
     return "{\n$strResult\n{$spaces}}";
 }
@@ -69,7 +67,6 @@ function getObjectToString($object, $depth)
 {
     $spaces = str_repeat('    ', $depth);
     $dataObject = get_object_vars($object);
-    $keys = array_keys($dataObject);
     $result = [];
     foreach ($dataObject as $key => $item) {
         $result[] = "{$key}: {$item}";
