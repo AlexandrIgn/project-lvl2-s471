@@ -67,10 +67,11 @@ function getObjectToString($object, $depth)
 {
     $spaces = str_repeat('    ', $depth);
     $dataObject = get_object_vars($object);
-    $result = [];
-    foreach ($dataObject as $key => $item) {
-        $result[] = "{$key}: {$item}";
-    }
+    $keysObject = array_keys($dataObject);
+    $result = array_reduce($keysObject, function ($acc, $key) use ($dataObject) {
+        $acc[] = "{$key}: {$dataObject[$key]}";
+        return $acc;
+    }, []);
     $strResult = implode("\n", $result);
     return $spaces . "    {$strResult}" . "\n    {$spaces}}";
 }
