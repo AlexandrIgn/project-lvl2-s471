@@ -8,6 +8,11 @@
             "email": "asignatyev@mail.ru"
         }
     ],
+    "keywords":[  
+        "differ",
+        "AST",
+        "project"
+    ],
     "require": {
         "docopt/docopt": "^1.0",
         "squizlabs/php_codesniffer": "^3.4",
