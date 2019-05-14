@@ -31,9 +31,11 @@
         "files":[  
             "src/Cli.php",
             "src/Differ.php",
-            "src/Decodder.php",
+            "src/Parser.php",
             "src/AstBuilder.php",
-            "src/Formater.php"
+            "src/Formatters/DefaultFormatter.php",
+            "src/Formatters/JsonFormatter.php",
+            "src/Formatters/PlainFormatter.php"
         ],
         "psr-4": {
             "DifferenceCalculator\\Tests\\": "tests"

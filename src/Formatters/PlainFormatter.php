@@ -1,15 +1,6 @@
 <?php
 
-namespace DifferenceCalculator\Formater;
-
-function getFormat($ast, $format)
-{
-    if ($format === 'plain') {
-        return getPlainFormat($ast);
-    } elseif ($format === 'json') {
-        return json_encode($ast, JSON_PRETTY_PRINT);
-    }
-}
+namespace DifferenceCalculator\Formatters\PlainFormatter;
 
 function getPlainFormat($ast, $partProperty = "")
 {
@@ -25,7 +16,7 @@ function getPlainFormat($ast, $partProperty = "")
         } elseif ($node['type'] === 'nested') {
             $acc[] = getPlainFormat($node['children'], "{$node['key']}.");
         }
-        return $acc;
+         return $acc;
     }, []);
     $strResult = implode("\n", $result);
     return $strResult;

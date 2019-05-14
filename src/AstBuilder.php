@@ -21,21 +21,21 @@ function buildAst($firstDecodeFile, $secondDecodeFile)
     $unionKeys = union(array_keys($firstArrayData), array_keys($secondArrayData));
     return array_reduce($unionKeys, function ($acc, $key) use ($firstArrayData, $secondArrayData) {
         if (array_key_exists($key, $firstArrayData) && !array_key_exists($key, $secondArrayData)) {
-            $acc[] = buildNode('removed', $key, replaceBoolToString($firstArrayData[$key]), 'without value');
+            $acc[] = buildNode('removed', $key, replaceBoolToString($firstArrayData[$key]), null);
         } elseif (!array_key_exists($key, $firstArrayData) && array_key_exists($key, $secondArrayData)) {
-            $acc[] = buildNode('added', $key, 'without value', replaceBoolToString($secondArrayData[$key]));
+            $acc[] = buildNode('added', $key, null, replaceBoolToString($secondArrayData[$key]));
         } elseif (array_key_exists($key, $firstArrayData) && array_key_exists($key, $secondArrayData)) {
             if (is_object($firstArrayData[$key]) && is_object($secondArrayData[$key])) {
                 $acc[] = buildNode(
                     'nested',
                     $key,
-                    'without value',
-                    'without value',
+                    null,
+                    null,
                     buildAst($firstArrayData[$key], $secondArrayData[$key])
                 );
             } else {
                 if ($firstArrayData[$key] === $secondArrayData[$key]) {
-                    $acc[] = buildNode('unchanged', $key, replaceBoolToString($firstArrayData[$key]), 'without value');
+                    $acc[] = buildNode('unchanged', $key, replaceBoolToString($firstArrayData[$key]), null);
                 } else {
                     $acc[] = buildNode(
                         'changed',
