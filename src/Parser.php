@@ -4,11 +4,11 @@ namespace DifferenceCalculator\Parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseFile($dataFile, $fileExtension)
+function parseData($data, $dataType)
 {
-    if ($fileExtension === 'json') {
-        return json_decode($dataFile);
-    } elseif ($fileExtension === 'yml') {
-        return Yaml::parse($dataFile, Yaml::PARSE_OBJECT_FOR_MAP);
+    if ($dataType === 'json') {
+        return json_decode($data);
+    } elseif ($dataType === 'yml') {
+        return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
     }
 }

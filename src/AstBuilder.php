@@ -14,10 +14,10 @@ function buildNode($type, $key, $beforeValue, $afterValue, $children = [])
     ];
 }
 
-function buildAst($firstDecodeFile, $secondDecodeFile)
+function buildAst($firstParsedData, $secondParsedData)
 {
-    $firstArrayData = get_object_vars($firstDecodeFile);
-    $secondArrayData = get_object_vars($secondDecodeFile);
+    $firstArrayData = get_object_vars($firstParsedData);
+    $secondArrayData = get_object_vars($secondParsedData);
     $unionKeys = union(array_keys($firstArrayData), array_keys($secondArrayData));
     return array_reduce($unionKeys, function ($acc, $key) use ($firstArrayData, $secondArrayData) {
         if (array_key_exists($key, $firstArrayData) && !array_key_exists($key, $secondArrayData)) {

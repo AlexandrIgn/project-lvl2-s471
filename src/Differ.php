@@ -2,27 +2,26 @@
 
 namespace DifferenceCalculator\Differ;
 
-use function DifferenceCalculator\Parser\parseFile;
+use function DifferenceCalculator\Parser\parseData;
 use function Funct\Collection\union;
 use function DifferenceCalculator\AstBuilder\buildAst;
-use function DifferenceCalculator\Formatters\DefaultFormatter\getDefaultFormat;
-use function DifferenceCalculator\Formatters\PlainFormatter\getPlainFormat;
-use function DifferenceCalculator\Formatters\JsonFormatter\getJsonFormat;
+use function DifferenceCalculator\Formatters\FullFormatter\getFullData;
+use function DifferenceCalculator\Formatters\PlainFormatter\getPlainData;
+use function DifferenceCalculator\Formatters\JsonFormatter\getJsonData;
 
-function genDiff($firstPathToFile, $secondPathToFile, $format = 'default')
+function genDiff($firstPathToFile, $secondPathToFile, $format = 'full')
 {
     $dataFirstFile = file_get_contents($firstPathToFile);
     $dataSecondFile = file_get_contents($secondPathToFile);
-    $extensionFirstFile = pathinfo($firstPathToFile, PATHINFO_EXTENSION);
-    $extensionSecondFile = pathinfo($secondPathToFile, PATHINFO_EXTENSION);
-    $firstParsedFile = parseFile($dataFirstFile, $extensionFirstFile);
-    $secondParsedFile = parseFile($dataSecondFile, $extensionSecondFile);
-    $ast = buildAst($firstParsedFile, $secondParsedFile);
-    if ($format === 'default') {
-        return getDefaultFormat($ast);
-    } elseif ($format === 'plain') {
-        return getPlainFormat($ast);
+    $firstDataType = pathinfo($firstPathToFile, PATHINFO_EXTENSION);
+    $secondDataType = pathinfo($secondPathToFile, PATHINFO_EXTENSION);
+    $firstParsedData = parseData($dataFirstFile, $firstDataType);
+    $secondParsedData = parseData($dataSecondFile, $secondDataType);
+    $ast = buildAst($firstParsedData, $secondParsedData);
+    if ($format === 'plain') {
+        return getPlainData($ast);
     } elseif ($format === 'json') {
-        return getJsonFormat($ast);
+        return getJsonData($ast);
     }
+    return getFullData($ast);
 }
