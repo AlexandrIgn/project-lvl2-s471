@@ -15,18 +15,14 @@ function getFullData($ast, $depth = 0)
                     "  - {$node['key']}: {$node['beforeValue']}";
                 break;
             case 'removed':
-                if (is_object($node['beforeValue'])) {
-                    $acc[] = $spaces . "  - {$node['key']}: {\n    " . getObjectToString($node['beforeValue'], $depth);
-                } else {
-                    $acc[] = $spaces . "  - {$node['key']}: {$node['beforeValue']}";
-                }
+                $acc[] = is_object($node['beforeValue']) ?
+                    $spaces . "  - {$node['key']}: {\n    " . getObjectToString($node['beforeValue'], $depth) :
+                    $spaces . "  - {$node['key']}: {$node['beforeValue']}";
                 break;
             case 'added':
-                if (is_object($node['afterValue'])) {
-                    $acc[] = $spaces . "  + {$node['key']}: {\n    " . getObjectToString($node['afterValue'], $depth);
-                } else {
-                    $acc[] = $spaces . "  + {$node['key']}: {$node['afterValue']}";
-                }
+                $acc[] = is_object($node['afterValue']) ?
+                    $spaces . "  + {$node['key']}: {\n    " . getObjectToString($node['afterValue'], $depth) :
+                    $spaces . "  + {$node['key']}: {$node['afterValue']}";
                 break;
             case 'nested':
                 $acc[] = $spaces . "    {$node['key']}: " . getFullData($node['children'], $depth + 1);
