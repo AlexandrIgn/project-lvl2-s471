@@ -6,9 +6,10 @@ use Symfony\Component\Yaml\Yaml;
 
 function parseData($data, $dataType)
 {
-    if ($dataType === 'json') {
-        return json_decode($data);
-    } elseif ($dataType === 'yml') {
-        return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
+    switch ($dataType) {
+        case 'json':
+            return json_decode($data);
+        case 'yml':
+            return Yaml::parse($data, Yaml::PARSE_OBJECT_FOR_MAP);
     }
 }

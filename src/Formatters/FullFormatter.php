@@ -8,21 +8,17 @@ function getFullData($ast, $depth = 0)
     $result = array_reduce($ast, function ($acc, $node) use ($depth, $spaces) {
         switch ($node['type']) {
             case 'unchanged':
-                $acc[] = $spaces . "    {$node['key']}: {$node['beforeValue']}";
+                $acc[] = $spaces . "    {$node['key']}: " . stringify($node['beforeValue'], $depth);
                 break;
             case 'changed':
-                $acc[] = $spaces . "  + {$node['key']}: {$node['afterValue']}" . PHP_EOL .  $spaces .
-                    "  - {$node['key']}: {$node['beforeValue']}";
+                $acc[] =  $spaces . "  + {$node['key']}: " . stringify($node['afterValue'], $depth) . PHP_EOL .
+                    $spaces . "  - {$node['key']}: " . stringify($node['beforeValue'], $depth);
                 break;
             case 'removed':
-                $acc[] = is_object($node['beforeValue']) ?
-                    $spaces . "  - {$node['key']}: {\n    " . getObjectToString($node['beforeValue'], $depth) :
-                    $spaces . "  - {$node['key']}: {$node['beforeValue']}";
+                $acc[] = $spaces . "  - {$node['key']}: " . stringify($node['beforeValue'], $depth);
                 break;
             case 'added':
-                $acc[] = is_object($node['afterValue']) ?
-                    $spaces . "  + {$node['key']}: {\n    " . getObjectToString($node['afterValue'], $depth) :
-                    $spaces . "  + {$node['key']}: {$node['afterValue']}";
+                $acc[] = $spaces . "  + {$node['key']}: " . stringify($node['afterValue'], $depth);
                 break;
             case 'nested':
                 $acc[] = $spaces . "    {$node['key']}: " . getFullData($node['children'], $depth + 1);
@@ -32,6 +28,11 @@ function getFullData($ast, $depth = 0)
     }, []);
     $strResult = implode("\n", $result);
     return "{\n$strResult\n{$spaces}}";
+}
+
+function stringify($nodeValue, $depth)
+{
+    return is_object($nodeValue) ? "{\n    " . getObjectToString($nodeValue, $depth) : replaceBoolToString($nodeValue);
 }
 
 function getObjectToString($object, $depth)
@@ -45,4 +46,12 @@ function getObjectToString($object, $depth)
     }, []);
     $strResult = implode("\n", $result);
     return $spaces . "    {$strResult}" . "\n    {$spaces}}";
+}
+
+function replaceBoolToString($value)
+{
+    if (is_bool($value)) {
+        return $value === true ? 'true' : 'false';
+    }
+    return $value;
 }

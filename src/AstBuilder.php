@@ -21,9 +21,9 @@ function buildAst($firstParsedData, $secondParsedData)
     $unionKeys = union(array_keys($firstArrayData), array_keys($secondArrayData));
     return array_reduce($unionKeys, function ($acc, $key) use ($firstArrayData, $secondArrayData) {
         if (array_key_exists($key, $firstArrayData) && !array_key_exists($key, $secondArrayData)) {
-            $acc[] = buildNode('removed', $key, replaceBoolToString($firstArrayData[$key]), null);
+            $acc[] = buildNode('removed', $key, $firstArrayData[$key], null);
         } elseif (!array_key_exists($key, $firstArrayData) && array_key_exists($key, $secondArrayData)) {
-            $acc[] = buildNode('added', $key, null, replaceBoolToString($secondArrayData[$key]));
+            $acc[] = buildNode('added', $key, null, $secondArrayData[$key]);
         } elseif (array_key_exists($key, $firstArrayData) && array_key_exists($key, $secondArrayData)) {
             if (is_object($firstArrayData[$key]) && is_object($secondArrayData[$key])) {
                 $acc[] = buildNode(
@@ -35,25 +35,17 @@ function buildAst($firstParsedData, $secondParsedData)
                 );
             } else {
                 if ($firstArrayData[$key] === $secondArrayData[$key]) {
-                    $acc[] = buildNode('unchanged', $key, replaceBoolToString($firstArrayData[$key]), null);
+                    $acc[] = buildNode('unchanged', $key, $firstArrayData[$key], null);
                 } else {
                     $acc[] = buildNode(
                         'changed',
                         $key,
-                        replaceBoolToString($firstArrayData[$key]),
-                        replaceBoolToString($secondArrayData[$key])
+                        $firstArrayData[$key],
+                        $secondArrayData[$key]
                     );
                 }
             }
         }
         return $acc;
     }, []);
-}
-
-function replaceBoolToString($value)
-{
-    if (is_bool($value)) {
-        return $value === true ? 'true' : 'false';
-    }
-    return $value;
 }
