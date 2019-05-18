@@ -38,10 +38,9 @@ function stringify($nodeValue, $depth)
 function getObjectToString($object, $depth)
 {
     $spaces = str_repeat('    ', $depth);
-    $dataObject = get_object_vars($object);
-    $keysObject = array_keys($dataObject);
-    $result = array_reduce($keysObject, function ($acc, $key) use ($dataObject) {
-        $acc[] = "{$key}: {$dataObject[$key]}";
+    $keysObject = array_keys(get_object_vars($object));
+    $result = array_reduce($keysObject, function ($acc, $key) use ($object) {
+        $acc[] = "{$key}: " . $object->$key;
         return $acc;
     }, []);
     $strResult = implode("\n", $result);
