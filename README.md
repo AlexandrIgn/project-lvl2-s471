@@ -1,28 +1,24 @@
 [![Build Status](https://travis-ci.org/AlexandrIgn/project-lvl2-s471.svg?branch=master)](https://travis-ci.org/AlexandrIgn/project-lvl2-s471)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/2139ef86fbd7c433911a/maintainability)](https://codeclimate.com/github/AlexandrIgn/project-lvl2-s471/maintainability)
-
-First step:
-
-[![asciicast](https://asciinema.org/a/CObKFmmZXKN3l9DmjN3IszzSL.svg)](https://asciinema.org/a/CObKFmmZXKN3l9DmjN3IszzSL)
-
-Second step:
-
-[![asciicast](https://asciinema.org/a/mCatJ4dXFR2pafN3cs69J4o4m.svg)](https://asciinema.org/a/mCatJ4dXFR2pafN3cs69J4o4m)
-
-Third step:
-
-[![asciicast](https://asciinema.org/a/0YKEAlYyArgeXBqK80JvA5IYD.svg)](https://asciinema.org/a/0YKEAlYyArgeXBqK80JvA5IYD)
-
-Fourth step:
-
-[![asciicast](https://asciinema.org/a/JGKinY14syBFOcBBpyijhrmME.svg)](https://asciinema.org/a/JGKinY14syBFOcBBpyijhrmME)
-
-Fifth step:
-
-[![asciicast](https://asciinema.org/a/YNayzIKMVT51sydG8y9O5SL8h.svg)](https://asciinema.org/a/YNayzIKMVT51sydG8y9O5SL8h)
-
-Sixth step:
-
-[![asciicast](https://asciinema.org/a/nXXpHH9E26I5ASr36cRQ3qLzW.svg)](https://asciinema.org/a/nXXpHH9E26I5ASr36cRQ3qLzW)
+# Вычислитель отличий <h2> 
+Данный проект реализован в рамках учебной программы на портале [Хеклет](https://ru.hexlet.io/pages/about). В рамках проекта реализована программа для поиска и вывода отличий между двумя файлами форматов json или yml. Программа позволяет выводить информацию в различном виде. 
+Для получения результата необходимо передать пути до двух файлов:
+``
+gendiff before.json after.json
+``
+Работа программы по-умолчанию
+![vlojenniydif](https://user-images.githubusercontent.com/46720922/64365615-9e513400-d025-11e9-8381-2bc45494aacf.gif)
+Для получения результата в формате plain:
+``
+gendiff before.json after.json --format plain
+``
+Вывод информации в формате plain
+![plain](https://user-images.githubusercontent.com/46720922/64365658-b032d700-d025-11e9-99dd-0a4f02fca4e1.gif)
+Для получения результата в формате json:
+``
+gendiff before.json after.json --format json
+``
+Вывод информации в формате json
+![Peek 2019-09-05 21-38](https://user-images.githubusercontent.com/46720922/64365706-c476d400-d025-11e9-81c1-6af3e1471266.gif)
 
